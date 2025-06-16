@@ -1,26 +1,45 @@
-import React from "react";
-
-//include images into your bundle
+import React, { useState } from "react";
 import rigoImage from "../../img/rigo-baby.jpg";
+import '@fortawesome/fontawesome-free/css/all.min.css';
 
-//create your first component
 const Home = () => {
-	return (
-		<div className="text-center">
-            
+	const [valor, setValor] = useState("");
+	const [datos, setDatos] = useState([]);
 
-			<h1 className="text-center mt-5">Hello Rigo!</h1>
-			<p>
-				<img src={rigoImage} />
-			</p>
-			<a href="#" className="btn btn-success">
-				If you see this green button... bootstrap is working...
-			</a>
-			<p>
-				Made by{" "}
-				<a href="http://www.4geeksacademy.com">4Geeks Academy</a>, with
-				love!
-			</p>
+	return (
+		<div className="container">
+			<h1>Datos</h1>
+			<ul>
+				<li>
+					<input 
+						type="text" 
+						onChange={(evento) => setValor(evento.target.value)}
+						value={valor}
+						onKeyDown={(evento) => {
+							if (evento.key === "Enter" && valor.trim() !== "") {
+								setDatos([...datos, valor]);
+								setValor("");
+							}
+						}}
+						placeholder="What you need to be done?"
+					/>
+				</li>
+
+				{datos.map((item, index) => (
+					<li key={index}>
+						{item}{" "}
+						<i 
+							className="fa-solid fa-circle-xmark"
+							style={{ color: "red", cursor: "pointer" }}
+							onClick={() => {
+								setDatos(datos.filter((_, i) => i !== index));
+							}}
+						></i>
+					</li>
+				))}
+			</ul>
+
+			<div>{datos.length} item{datos.length !== 1 ? "s" : ""} </div>
 		</div>
 	);
 };
