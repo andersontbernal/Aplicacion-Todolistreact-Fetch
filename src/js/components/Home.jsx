@@ -47,11 +47,11 @@ const Home = () => {
 				"label": tarea,
 				"is_done": false
 			} 
-		let nuevaTarea = [...lista, task]
+		
 
 		fetch('https://playground.4geeks.com/todo/todos/andersontbernal',{
 			method: "POST",
-			body: JSON.stringify(nuevaTarea),
+			body: JSON.stringify(task),
 			headers:{
 				"Content-Type": "application/json"
 			}
