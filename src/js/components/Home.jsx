@@ -6,6 +6,16 @@ const Home = () => {
 	const [valor, setValor] = useState("");
 	const [lista, setLista] = useState([]);
 
+	// function crearUsuario() {
+	// 	return fetch("https://playground.4geeks.com/todo/users/andersontbernal", {
+	// 		method: "POST",
+	// 		headers: {"Content-Type": "application/json"},
+			
+	// 	});
+		
+	// }
+
+
 	function okListaDeTareas(params) {
 		fetch('https://playground.4geeks.com/todo/users/andersontbernal', { method: "GET" })// buscar informacion en la url
 			.then((response) => {
@@ -16,6 +26,48 @@ const Home = () => {
 			
 			.catch((error) => console.log(error)) // si algo sale, lo aviso
 	}
+
+	// function agregarTarea(label) {
+	// 	const nueva = {
+	// 		label: label, 
+	// 		done: false
+	// 	};
+	// 	fetch("https://playground.4geeks.com/todo/todos/andersontbernal", {
+	// 		method: "POST",
+	// 		headers: {"Content-Type": "application/json"},
+	// 		body: JSON.stringify(nueva)
+	// 	})
+	// 	.then(res => {
+
+	// 	})
+	// }
+
+	function createTask(tarea) {
+		let task = {
+				"label": tarea,
+				"is_done": false
+			} 
+		let nuevaTarea = [...lista, task]
+
+		fetch('https://playground.4geeks.com/todo/todos/andersontbernal',{
+			method: "POST",
+			body: JSON.stringify(nuevaTarea),
+			headers:{
+				"Content-Type": "application/json"
+			}
+		})
+		.then((response)=>{
+			console.log(response);
+			response.json()
+		})					
+		.then(()=>{
+			okListaDeTareas()
+		})
+		.catch((error)=>console.log(error))
+
+	}
+
+
 	useEffect(() => {
 		okListaDeTareas()
 	}, [])
@@ -30,12 +82,11 @@ const Home = () => {
 						type="text"
 						onChange={(evento) => setValor(evento.target.value)}
 						value={valor}
-						// onKeyDown={(evento) => {
-						// 	if (evento.key === "Enter" && valor.trim() !== "") {
-						// 		setDatos([...datos, valor]);
-						// 		setValor("");
-						// 	}
-						// }}
+						onKeyDown={(evento) => {
+							if (evento.key === "Enter" ) {
+								createTask(valor)
+							}
+						}}
 						placeholder="What you need to be done?"
 					/>
 				</li>
